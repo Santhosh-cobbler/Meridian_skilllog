@@ -1,0 +1,5 @@
+-- this is named as Skill-log
+  -- which is a part of the Meridian
+     -- A application used to store what I am learned today
+
+     

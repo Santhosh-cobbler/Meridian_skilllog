@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillLog — My Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #252535;
+    --border-hover: #353550;
+    --accent: #7c6ef5;
+    --accent-dim: rgba(124,110,245,0.12);
+    --accent-glow: rgba(124,110,245,0.2);
+    --text: #f0eeff;
+    --muted: #7a7a99;
+    --muted2: #4a4a66;
+    --success-bg: rgba(104,211,145,0.1);
+    --success: #68d391;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; padding: 0 0 60px;
+  }
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,110,245,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,110,245,0.025) 1px, transparent 1px);
+    background-size: 48px 48px; pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,10,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 60px;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-icon {
+    width: 30px; height: 30px; background: var(--accent); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 13px; color: #fff;
+  }
+  .brand-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 16px; letter-spacing: -0.3px; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-user { font-size: 13px; color: var(--muted); }
+  .nav-logout {
+    font-size: 13px; color: var(--muted); text-decoration: none;
+    padding: 6px 12px; border: 1px solid var(--border); border-radius: 7px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .nav-logout:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* LAYOUT */
+  .container { max-width: 900px; margin: 0 auto; padding: 40px 24px; position: relative; z-index: 1; }
+
+  /* PAGE HEADER */
+  .page-header { margin-bottom: 36px; }
+  .page-header h1 {
+    font-family: 'Syne', sans-serif; font-size: 30px; font-weight: 800;
+    letter-spacing: -0.8px; margin-bottom: 6px;
+  }
+  .page-header p { font-size: 14px; color: var(--muted); }
+
+  /* STATS ROW */
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 32px; }
+  .stat-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 14px; padding: 20px 22px;
+    transition: border-color 0.2s;
+  }
+  .stat-card:hover { border-color: var(--border-hover); }
+  .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); margin-bottom: 8px; }
+  .stat-value { font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 700; color: var(--text); }
+  .stat-unit { font-size: 13px; color: var(--muted); margin-left: 4px; font-weight: 400; }
+
+  /* FORM CARD */
+  .form-card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 32px; margin-bottom: 32px;
+    position: relative; overflow: hidden;
+  }
+  .form-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+  }
+  .form-card h2 {
+    font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700;
+    margin-bottom: 22px; display: flex; align-items: center; gap: 8px;
+  }
+  .form-card h2::before {
+    content: '+'; display: inline-flex; align-items: center; justify-content: center;
+    width: 22px; height: 22px; background: var(--accent-dim); color: var(--accent);
+    border-radius: 6px; font-size: 14px; font-weight: 700;
+  }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .field { display: flex; flex-direction: column; }
+  .field.full { grid-column: 1 / -1; }
+  label {
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 7px;
+  }
+  input[type="text"], input[type="number"], textarea, select {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    --webkit-appearance: none; resize: none;
+  }
+  input:focus, textarea:focus, select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim);
+  }
+  input::placeholder, textarea::placeholder { color: var(--muted2); }
+  textarea { min-height: 96px; line-height: 1.6; }
+  select option { background: var(--card); color: var(--text); }
+  .form-footer {
+    margin-top: 20px; display: flex; align-items: center; justify-content: flex-end; gap: 12px;
+  }
+  .btn-reset {
+    padding: 11px 20px; background: transparent; color: var(--muted);
+    border: 1px solid var(--border); border-radius: 9px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-reset:hover { border-color: var(--border-hover); color: var(--text); }
+  .btn-submit {
+    padding: 11px 24px; background: var(--accent); color: #fff; border: none;
+    border-radius: 9px; font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: opacity 0.2s, transform 0.1s; letter-spacing: 0.2px;
+  }
+  .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-submit:active { transform: translateY(0); }
+
+  /* TABLE */
+  .table-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+  }
+  .table-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .table-header h2 { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; }
+  .count-badge {
+    background: var(--accent-dim); color: var(--accent);
+    border: 1px solid rgba(124,110,245,0.2); border-radius: 20px;
+    font-size: 12px; font-weight: 500; padding: 2px 10px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    padding: 12px 20px; text-align: left;
+    font-size: 11px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.8px;
+    background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border);
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(124,110,245,0.04); }
+  td { padding: 14px 20px; font-size: 14px; vertical-align: middle; }
+  .skill-pill {
+    display: inline-block; background: var(--accent-dim); color: var(--accent);
+    border: 1px solid rgba(124,110,245,0.2); border-radius: 6px;
+    font-size: 12px; font-weight: 500; padding: 3px 10px;
+  }
+  .hours-badge {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: var(--success-bg); color: var(--success);
+    border-radius: 6px; font-size: 12px; font-weight: 500; padding: 3px 10px;
+  }
+  .desc-text { color: var(--muted); font-size: 13px; line-height: 1.5; max-width: 280px; }
+  .date-text { color: var(--muted2); font-size: 12px; white-space: nowrap; }
+  .empty-state {
+    padding: 48px 24px; text-align: center; color: var(--muted);
+  }
+  .empty-icon {
+    font-size: 32px; margin-bottom: 12px; opacity: 0.4;
+  }
+  .empty-state p { font-size: 14px; }
+
+  @media (max-width: 640px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .stats { grid-template-columns: 1fr; }
+    .card { padding: 28px 20px; }
+    nav { padding: 0 16px; }
+    .container { padding: 24px 16px; }
+    thead th:nth-child(4), td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="brand">
+    <div class="brand-icon">S</div>
+    <span class="brand-name">SkillLog</span>
+  </div>
+  <div class="nav-right">
+    <span class="nav-user">{{ email }}</span>
+    <a href="Login.html" class="nav-logout">Sign out</a>
+  </div>
+</nav>
+
+<div class="container">
+
+  <!-- Page header -->
+  <div class="page-header">
+    <h1>My learning log</h1>
+    <p>Every session counts. Keep the streak going.</p>
+  </div>
+
+  <!-- Stats row (populated by backend) -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-label">Total sessions</div>
+      <div class="stat-value">{{ total_sessions }}<span class="stat-unit">logs</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Hours logged</div>
+      <div class="stat-value">{{ total_hours }}<span class="stat-unit">hrs</span></div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Skills tracked</div>
+      <div class="stat-value">{{ unique_skills }}<span class="stat-unit">skills</span></div>
+    </div>
+  </div>
+
+  <!-- Log form -->
+  <div class="form-card">
+    <h2>Log a session</h2>
+    <form method="POST">
+      <div class="form-grid">
+        <div class="field">
+          <label for="skill">Skill</label>
+          <input type="text" id="skill" name="skill" placeholder="e.g. FastAPI, JavaScript, PyTorch" required maxlength="100">
+        </div>
+        <div class="field">
+          <label for="hours">Hours spent</label>
+          <input type="number" id="hours" name="hours" placeholder="e.g. 2.5" required min="0.1" max="24" step="0.5">
+        </div>
+        <div class="field full">
+          <label for="description">What did you learn?</label>
+          <textarea id="description" name="description" placeholder="Describe what you worked on, what clicked, what you struggled with..." required maxlength="1000"></textarea>
+        </div>
+      </div>
+      <div class="form-footer">
+        <button type="reset" class="btn-reset">Clear</button>
+        <button type="submit" class="btn-submit">Save session →</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Entries table -->
+  <div class="table-card">
+    <div class="table-header">
+      <h2>All sessions</h2>
+      <span class="count-badge">{{ total_sessions }} entries</span>
+    </div>
+
+    {% if entries %}
+    <table>
+      <thead>
+        <tr>
+          <th>Skill</th>
+          <th>Hours</th>
+          <th>What I learned</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entry in entries %}
+        <tr>
+          <td><span class="skill-pill">{{ entry.skill }}</span></td>
+          <td><span class="hours-badge">{{ entry.time }} hr</span></td>
+          <td><span class="desc-text">{{ entry.description }}</span></td>
+          <td><span class="date-text">{{ entry.created_at }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <p>No sessions logged yet. Add your first one above.</p>
+    </div>
+    {% endif %}
+  </div>
+
+</div>
+</body>
+</html>

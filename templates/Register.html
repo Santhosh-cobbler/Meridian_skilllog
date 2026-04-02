@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillLog — Register</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --card: #16161f;
+    --border: #252535;
+    --accent: #7c6ef5;
+    --accent-dim: rgba(124,110,245,0.12);
+    --text: #f0eeff;
+    --muted: #7a7a99;
+  }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg); color: var(--text);
+    min-height: 100vh; display: flex;
+    align-items: center; justify-content: center;
+    padding: 24px; position: relative; overflow: hidden;
+  }
+  body::before {
+    content: ''; position: fixed;
+    bottom: -40%; right: -20%; width: 70%; height: 70%;
+    background: radial-gradient(ellipse, rgba(124,110,245,0.07) 0%, transparent 65%);
+    pointer-events: none;
+  }
+  .grid-bg {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(124,110,245,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,110,245,0.03) 1px, transparent 1px);
+    background-size: 48px 48px; pointer-events: none;
+  }
+  .card {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 48px 44px;
+    width: 100%; max-width: 440px;
+    position: relative; z-index: 1;
+    animation: fadeUp 0.5s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .card::before {
+    content: ''; position: absolute; inset: -1px; border-radius: 21px;
+    background: linear-gradient(135deg, rgba(124,110,245,0.18), transparent 50%);
+    pointer-events: none; z-index: -1;
+  }
+  .brand { display: flex; align-items: center; gap: 10px; margin-bottom: 36px; }
+  .brand-icon {
+    width: 36px; height: 36px; background: var(--accent); border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 16px; color: #fff;
+  }
+  .brand-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 18px; letter-spacing: -0.3px; }
+  .tag {
+    display: inline-block; background: var(--accent-dim); color: var(--accent);
+    border: 1px solid rgba(124,110,245,0.2); border-radius: 6px;
+    font-size: 11px; font-weight: 500; padding: 2px 8px;
+    margin-bottom: 14px; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  h1 { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 700; letter-spacing: -0.5px; margin-bottom: 6px; }
+  .subtitle { font-size: 14px; color: var(--muted); margin-bottom: 32px; line-height: 1.5; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field { margin-bottom: 18px; }
+  label {
+    display: block; font-size: 12px; font-weight: 500; color: var(--muted);
+    text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 8px;
+  }
+  input[type="email"], input[type="password"], input[type="text"] {
+    width: 100%; background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 13px 16px;
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text);
+    outline: none; transition: border-color 0.2s, box-shadow 0.2s; --webkit-appearance: none;
+  }
+  input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-dim); }
+  input::placeholder { color: #3a3a55; }
+  .hint { font-size: 11px; color: var(--muted); margin-top: 5px; }
+  .btn {
+    width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none;
+    border-radius: 10px; font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600;
+    cursor: pointer; margin-top: 8px; transition: opacity 0.2s, transform 0.1s; letter-spacing: 0.2px;
+  }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+  .divider { text-align: center; margin: 24px 0; position: relative; color: var(--muted); font-size: 12px; }
+  .divider::before, .divider::after {
+    content: ''; position: absolute; top: 50%; width: 40%; height: 1px; background: var(--border);
+  }
+  .divider::before { left: 0; } .divider::after { right: 0; }
+  .footer-link { text-align: center; font-size: 13px; color: var(--muted); }
+  .footer-link a { color: var(--accent); text-decoration: none; font-weight: 500; }
+  .footer-link a:hover { text-decoration: underline; }
+  .terms { font-size: 12px; color: var(--muted); text-align: center; margin-top: 16px; line-height: 1.5; }
+  .terms a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="card">
+  <div class="brand">
+    <div class="brand-icon">S</div>
+    <span class="brand-name">SkillLog</span>
+  </div>
+  <div class="tag">Get started</div>
+  <h1>Create account</h1>
+  <p class="subtitle">Start logging your skills and track real progress over time.</p>
+  <form action="/register" method="POST">
+    <div class="row">
+      <div class="field">
+        <label for="fname">First name</label>
+        <input type="text" id="fname" name="first_name" placeholder="Santhosh" required autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="lname">Last name</label>
+        <input type="text" id="lname" name="last_name" placeholder="R">
+      </div>
+    </div>
+    <div class="field">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" placeholder="you@example.com" required autocomplete="email">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Min. 8 characters" required autocomplete="new-password" minlength="8">
+      <p class="hint">Use at least 8 characters with a mix of letters and numbers.</p>
+    </div>
+    <div class="field">
+      <label for="confirm">Confirm password</label>
+      <input type="password" id="confirm" name="confirm_password" placeholder="Repeat your password" required autocomplete="new-password">
+    </div>
+    <button type="submit" class="btn">Create account →</button>
+  </form>
+  <div class="divider">or</div>
+  <p class="footer-link">Already have an account? <a href="{{ url_for('login') }}">Sign in</a></p>
+  <p class="terms">By registering you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+</div>
+</body>
+</html>
