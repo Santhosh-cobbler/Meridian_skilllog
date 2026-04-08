@@ -122,12 +122,14 @@ def dashboard():
             skill = request.form.get('skill')
             hrs = request.form.get('hours')
             descp = request.form.get('description')
+            select_type = request.form.get('type-action')
 
             supabase.table('skill_logs').insert({
                 'user_id': session['user_id'],
                 'skill': skill,
                 'time': hrs,
-                'description': descp
+                'description': descp,
+                'Type': select_type
             }).execute()
 
 
@@ -169,4 +171,4 @@ def dashboard():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

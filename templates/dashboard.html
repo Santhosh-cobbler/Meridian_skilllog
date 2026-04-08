@@ -245,10 +245,18 @@
         </div>
         <div class="field">
           <label for="hours">Hours spent</label>
-          <input type="number" id="hours" name="hours" placeholder="e.g. 2.5" required min="0.1" max="24" step="0.5">
+          <input type="number" name="hours" step="0.01" required>
+        </div>
+        <div class="field">
+          <label for="type-action">select</label>
+          <select name="type-action" id="type-action">
+            <option>Learn</option>
+            <option>practise</option>
+            <option>Revise</option>
+          </select>
         </div>
         <div class="field full">
-          <label for="description">What did you learn?</label>
+          <label for="description">What did you learn or practise or revise?</label>
           <textarea id="description" name="description" placeholder="Describe what you worked on, what clicked, what you struggled with..." required maxlength="1000"></textarea>
         </div>
       </div>
