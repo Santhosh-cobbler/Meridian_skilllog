@@ -53,8 +53,6 @@ def login():
 
             session['access_token'] = data.session.access_token
 
-            print(f'{email} {pwd}   -->\n {session.get('supabase_session')}')
-
             return redirect(url_for('dashboard'))
 
         except Exception as e:
@@ -151,7 +149,7 @@ def dashboard():
         # total rows (today)
         total_rows = len(sessions_log)
 
-        # total hours 🔥
+        # total hours
         tot_hours = round(sum(float(row.get('time', 0) or 0) for row in sessions_log), 2)
 
         # unique skills
